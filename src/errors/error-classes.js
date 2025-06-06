@@ -43,7 +43,7 @@ class UnauthorizedError extends BaseError {
 }
 
 class UserExistsError extends BaseError {
-    constructor(message = 'User with this email or username already exists') {
+    constructor(message = 'User with this email already exists') {
         super(message, 'UserExistsError', 409);
     }
 }

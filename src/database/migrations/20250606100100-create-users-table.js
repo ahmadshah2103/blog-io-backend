@@ -29,6 +29,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      avatar_url: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
@@ -40,8 +44,8 @@ module.exports = {
     });
 
     // Add indexes
-    await queryInterface.addIndex(tableName, ['email'], { unique: true });
-    await queryInterface.addIndex(tableName, ['name']);
+    await queryInterface.addIndex(tableName, ["email"], { unique: true });
+    await queryInterface.addIndex(tableName, ["name"]);
   },
 
   async down(queryInterface, Sequelize) {

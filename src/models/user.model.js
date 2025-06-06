@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      avatar_url: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
@@ -40,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       createdAt: "created_at",
       updatedAt: "updated_at",
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: { include: ["password"] },
+        },
+      },
       indexes: [
         {
           unique: true,
@@ -67,7 +79,6 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Like, { foreignKey: "user_id", as: "likes" });
     User.hasMany(models.Comment, { foreignKey: "user_id", as: "comments" });
 
-    // Self-referencing associations for follows
     User.belongsToMany(models.User, {
       through: models.Follow,
       as: "followers",
