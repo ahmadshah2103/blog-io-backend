@@ -17,20 +17,30 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       tableName: "categories",
-      timestamps: false,
-      paranoid: false,
+      timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
 
   Category.associate = (models) => {
     Category.belongsToMany(models.Post, {
       through: models.PostCategory,
-      foreignKey: 'category_id',
-      otherKey: 'post_id',
-      as: 'posts'
+      foreignKey: "category_id",
+      otherKey: "post_id",
+      as: "posts",
+      onDelete: "CASCADE",
     });
   };
 

@@ -11,11 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'users',
-          key: 'user_id'
-        },
-        onDelete: 'CASCADE'
       },
       title: {
         type: DataTypes.STRING(255),
@@ -36,27 +31,44 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "posts",
+      timestamps: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
-      paranoid: false,
+      indexes: [
+        {
+          fields: ["user_id"],
+        },
+        {
+          fields: ["created_at"],
+        },
+        {
+          fields: ["title"],
+        },
+      ],
     }
   );
 
   Post.associate = (models) => {
-    Post.belongsTo(models.User, { foreignKey: 'user_id', as: 'author' });
-    Post.hasMany(models.Like, { foreignKey: 'post_id', as: 'likes' });
-    Post.hasMany(models.Comment, { foreignKey: 'post_id', as: 'comments' });
+    Post.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "author",
+      onDelete: "CASCADE",
+    });
+    Post.hasMany(models.Like, { foreignKey: "post_id", as: "likes" });
+    Post.hasMany(models.Comment, { foreignKey: "post_id", as: "comments" });
     Post.belongsToMany(models.Tag, {
       through: models.PostTag,
-      foreignKey: 'post_id',
-      otherKey: 'tag_id',
-      as: 'tags'
+      foreignKey: "post_id",
+      otherKey: "tag_id",
+      as: "tags",
+      onDelete: "CASCADE",
     });
     Post.belongsToMany(models.Category, {
       through: models.PostCategory,
-      foreignKey: 'post_id',
-      otherKey: 'category_id',
-      as: 'categories'
+      foreignKey: "post_id",
+      otherKey: "category_id",
+      as: "categories",
+      onDelete: "CASCADE",
     });
   };
 

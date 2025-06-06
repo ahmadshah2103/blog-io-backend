@@ -11,20 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       post_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'posts',
-          key: 'post_id'
-        },
-        onDelete: 'CASCADE'
       },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'users',
-          key: 'user_id'
-        },
-        onDelete: 'CASCADE'
       },
       content: {
         type: DataTypes.TEXT,
@@ -34,18 +24,41 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       tableName: "comments",
+      timestamps: true,
       createdAt: "created_at",
-      updatedAt: false,
-      paranoid: false,
+      updatedAt: "updated_at",
+      indexes: [
+        {
+          fields: ["post_id"],
+        },
+        {
+          fields: ["user_id"],
+        },
+        {
+          fields: ["created_at"],
+        },
+      ],
     }
   );
 
   Comment.associate = (models) => {
-    Comment.belongsTo(models.Post, { foreignKey: 'post_id', as: 'post' });
-    Comment.belongsTo(models.User, { foreignKey: 'user_id', as: 'author' });
+    Comment.belongsTo(models.Post, {
+      foreignKey: "post_id",
+      as: "post",
+      onDelete: "CASCADE",
+    });
+    Comment.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "author",
+      onDelete: "CASCADE",
+    });
   };
 
   return Comment;

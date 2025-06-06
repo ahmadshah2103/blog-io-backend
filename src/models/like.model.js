@@ -11,43 +11,45 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'users',
-          key: 'user_id'
-        },
-        onDelete: 'CASCADE'
       },
       post_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'posts',
-          key: 'post_id'
-        },
-        onDelete: 'CASCADE'
       },
       created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
     },
     {
       tableName: "likes",
+      timestamps: true,
       createdAt: "created_at",
-      updatedAt: false,
-      paranoid: false,
+      updatedAt: "updated_at",
       indexes: [
         {
           unique: true,
-          fields: ['user_id', 'post_id']
-        }
-      ]
+          fields: ["user_id", "post_id"],
+        },
+      ],
     }
   );
 
   Like.associate = (models) => {
-    Like.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-    Like.belongsTo(models.Post, { foreignKey: 'post_id', as: 'post' });
+    Like.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "user",
+      onDelete: "CASCADE",
+    });
+    Like.belongsTo(models.Post, {
+      foreignKey: "post_id",
+      as: "post",
+      onDelete: "CASCADE",
+    });
   };
 
   return Like;

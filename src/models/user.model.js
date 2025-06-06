@@ -40,7 +40,15 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       createdAt: "created_at",
       updatedAt: "updated_at",
-      paranoid: false,
+      indexes: [
+        {
+          unique: true,
+          fields: ["email"],
+        },
+        {
+          fields: ["name"],
+        },
+      ],
       hooks: {
         beforeCreate: async (user) => {
           user.password = await hashPassword(user.password);
@@ -55,22 +63,24 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = (models) => {
-    User.hasMany(models.Post, { foreignKey: 'user_id', as: 'posts' });
-    User.hasMany(models.Like, { foreignKey: 'user_id', as: 'likes' });
-    User.hasMany(models.Comment, { foreignKey: 'user_id', as: 'comments' });
-    
+    User.hasMany(models.Post, { foreignKey: "user_id", as: "posts" });
+    User.hasMany(models.Like, { foreignKey: "user_id", as: "likes" });
+    User.hasMany(models.Comment, { foreignKey: "user_id", as: "comments" });
+
     // Self-referencing associations for follows
     User.belongsToMany(models.User, {
       through: models.Follow,
-      as: 'Followers',
-      foreignKey: 'followed_id',
-      otherKey: 'follower_id'
+      as: "followers",
+      foreignKey: "followed_id",
+      otherKey: "follower_id",
+      onDelete: "CASCADE",
     });
     User.belongsToMany(models.User, {
       through: models.Follow,
-      as: 'Following',
-      foreignKey: 'follower_id',
-      otherKey: 'followed_id'
+      as: "following",
+      foreignKey: "follower_id",
+      otherKey: "followed_id",
+      onDelete: "CASCADE",
     });
   };
 
