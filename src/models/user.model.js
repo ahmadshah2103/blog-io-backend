@@ -1,12 +1,13 @@
 const { hashPassword } = require("../utils/password.util");
+const { v7: uuidv7 } = require("uuid");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
       user_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv7(),
         primaryKey: true,
         allowNull: false,
       },

@@ -1,13 +1,21 @@
+const { v7: uuidv7 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   const Follow = sequelize.define(
     "Follow",
     {
+      follow_id: {
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv7(),
+        primaryKey: true,
+        allowNull: false,
+      },
       follower_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       followed_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       created_at: {
