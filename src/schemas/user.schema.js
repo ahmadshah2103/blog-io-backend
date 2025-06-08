@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const userIdSchema = Joi.object({
-  user_id: Joi.number().integer().positive().required(),
+  user_id: Joi.string().uuid().required(),
 });
 
 const updateUserSchema = Joi.object({
