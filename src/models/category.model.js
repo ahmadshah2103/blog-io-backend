@@ -1,10 +1,12 @@
+const { v7: uuidv7 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     "Category",
     {
       category_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv7(),
         primaryKey: true,
         allowNull: false,
       },

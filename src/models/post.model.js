@@ -1,15 +1,17 @@
+const { v7: uuidv7 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define(
     "Post",
     {
       post_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv7(),
         primaryKey: true,
         allowNull: false,
       },
       user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       title: {

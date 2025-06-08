@@ -1,10 +1,12 @@
+const { v7: uuidv7 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   const Tag = sequelize.define(
     "Tag",
     {
       tag_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv7(),
         primaryKey: true,
         allowNull: false,
       },
@@ -26,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "tags",
       timestamps: true,
       createdAt: "created_at",
-      updatedAt: "updated_at", // Fix: was "updatedAy"
+      updatedAt: "updated_at",
       indexes: [
         {
           unique: true,

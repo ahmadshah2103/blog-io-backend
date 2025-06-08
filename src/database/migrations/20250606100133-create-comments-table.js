@@ -7,13 +7,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(tableName, {
       comment_id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
       post_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'posts',
@@ -22,7 +22,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'users',
