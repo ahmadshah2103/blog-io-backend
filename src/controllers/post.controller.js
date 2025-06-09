@@ -54,7 +54,8 @@ const getAll = async (req, res, next) => {
 
     res.status(200).json({
       message: "Posts retrieved successfully",
-      data: { posts: rows, pagination },
+      data: rows,
+      pagination,
     });
   } catch (error) {
     next(error);

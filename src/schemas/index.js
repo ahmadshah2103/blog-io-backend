@@ -2,6 +2,7 @@ const Joi = require("joi");
 const userSchemas = require("./user.schema");
 const postSchemas = require("./post.schema");
 const authSchemas = require("./auth.schema");
+const commentSchema = require("./comment.schema");
 
 const paginationSchema = Joi.object({
   page: Joi.number().integer().min(1).default(1).optional(),
@@ -13,4 +14,5 @@ module.exports = {
   ...userSchemas,
   ...postSchemas,
   ...authSchemas,
+  ...commentSchema,
 };
