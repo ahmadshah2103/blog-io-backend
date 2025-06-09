@@ -1,4 +1,5 @@
 const { UnauthorizedError } = require("../errors/error-classes");
+const { getUserById } = require("../services/user.service");
 const { verifyToken } = require("../utils/jwt.util");
 
 const authenticateUser = async (req, res, next) => {
@@ -14,14 +15,9 @@ const authenticateUser = async (req, res, next) => {
 
     const decodedToken = verifyToken(token);
 
-    // const account = await instituteAccountService.(
-    //   decodedToken.username
-    // );
-    // if (!account) {
-    //   throw new UnauthorizedError("Account not found");
-    // }
+    const user = await getUserById(decodedToken.user_id);
 
-    // req.account = account;
+    req.user = user;
     next();
   } catch (error) {
     next(error);

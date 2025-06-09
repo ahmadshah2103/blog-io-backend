@@ -1,4 +1,4 @@
-const Router = require("express");
+const { Router } = require("express");
 const constroller = require("../controllers/auth.controller");
 const router = Router({ mergeParams: true });
 
