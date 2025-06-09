@@ -15,7 +15,25 @@ const getAll = async ({ limit, offset }) => {
 };
 
 const getById = async (id) => {
-  const post = await Post.findByPk(id);
+  const post = await Post.findByPk(id, {
+    include: [
+      {
+        association: "author",
+        attributes: ["user_id", "name", "email"],
+      },
+      {
+        association: "comments",
+        attributes: ["comment_id", "content", "created_at"],
+        include: [
+          {
+            association: "author",
+            attributes: ["user_id", "name", "email"],
+          },
+        ],
+      },
+    ],
+  });
+
   if (!post) throw new NotFoundError("Post");
   return post;
 };
