@@ -6,11 +6,22 @@ const create = async (commentData) => {
   return comment;
 };
 
-const getAll = async ({ limit, offset }) => {
+const getAll = async ({ limit, offset, postId }) => {
   return await Comment.findAndCountAll({
     limit,
     offset,
     order: [["created_at", "DESC"]],
+    include: [
+      {
+        association: "author",
+        attributes: ["user_id", "name", "email"],
+      },
+      {
+        association: "post",
+        attributes: ["post_id", "title"],
+        where: { post_id: postId },
+      },
+    ],
   });
 };
 

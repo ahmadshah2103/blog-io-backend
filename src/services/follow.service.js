@@ -39,7 +39,19 @@ const unfollow = async (userId, targetUserId) => {
   }
 };
 
+const checkStatus = async (userId, targetUserId) => {
+  const follow = await Follow.findOne({
+    where: {
+      follower_id: userId,
+      followed_id: targetUserId,
+    },
+  });
+
+  return !!follow;
+};
+
 module.exports = {
   follow,
   unfollow,
+  checkStatus,
 };

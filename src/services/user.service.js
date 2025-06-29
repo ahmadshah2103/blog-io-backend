@@ -28,9 +28,8 @@ const getFollowers = async (userId, options = {}) => {
     offset,
     include: [
       {
-        model: Follow,
-        as: "followers",
-        where: { followed_id: userId },
+        association: "followers",
+        where: { user_id: userId },
       },
     ],
     order: [["created_at", "DESC"]],
@@ -45,9 +44,8 @@ const getFollowed = async (userId, options = {}) => {
     offset,
     include: [
       {
-        model: Follow,
-        as: "following",
-        where: { follower_id: userId },
+        association: "following",
+        where: { user_id: userId },
       },
     ],
     order: [["created_at", "DESC"]],

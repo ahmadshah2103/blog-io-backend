@@ -7,26 +7,23 @@ const dbConfig = config.database;
 const db = {};
 const basename = path.basename(__filename);
 
-const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    dialect: "postgres",
-    logging: console.log,
-    define: {
-      timestamps: true,
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
-    },
-  }
-);
+const sequelize = dbConfig.url
+  ? new Sequelize(dbConfig.url)
+  : new Sequelize(dbConfig.username, dbConfig.password, {
+      host: dbConfig.host,
+      port: dbConfig.port,
+      dialect: "postgres",
+      logging: console.log,
+      define: {
+        timestamps: true,
+      },
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+      },
+    });
 
 sequelize
   .authenticate()

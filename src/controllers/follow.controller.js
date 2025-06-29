@@ -46,7 +46,29 @@ const unfollow = async (req, res, next) => {
   }
 };
 
+const checkFollowStatus = async (req, res, next) => {
+  try {
+    const { error } = userIdSchema.validate(req.params);
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
+    const { user_id: targetUserId } = req.params;
+    const { user_id } = req.user;
+
+    const isFollowing = await followService.checkStatus(user_id, targetUserId);
+
+    res.status(200).json({
+      message: "Follow status retrieved successfully",
+      data: { is_following: isFollowing },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   follow,
   unfollow,
+  checkFollowStatus,
 };

@@ -1,9 +1,9 @@
 const { ValidationError } = require("../errors/error-classes");
 const {
-  paginationSchema,
   createPostSchema,
   postIdSchema,
   updatePostSchema,
+  likedPostsPaginationSchema,
 } = require("../schemas");
 const postService = require("../services/post.service");
 const {
@@ -37,16 +37,24 @@ const create = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const { error } = paginationSchema.validate(req.query);
+    const { user_id } = req.user;
+
+    const { error } = likedPostsPaginationSchema.validate(req.query);
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const { page, limit } = req.query;
+    const { page, limit, liked, feedType } = req.query;
 
     const offset = getOffset(page, limit);
 
-    const { count, rows } = await postService.getAll({ limit, offset });
+    const { count, rows } = await await postService.getAll({
+      limit,
+      offset,
+      liked,
+      userId: user_id,
+      feedType,
+    });
 
     const pagination = getPaginationMetadata(count, page, limit);
 

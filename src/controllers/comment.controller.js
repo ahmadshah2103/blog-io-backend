@@ -39,12 +39,18 @@ const getAll = async (req, res, next) => {
     const { error } = paginationSchema.validate(req.query);
     if (error) throw new ValidationError(error.message);
 
+    const { error: paramsError } = postIdSchema.validate(req.params);
+    if (paramsError) throw new ValidationError(paramsError.message);
+
+    const { post_id } = req.params;
+
     const { page, limit } = req.query;
     const offset = getOffset(page, limit);
 
     const { count, rows } = await commentService.getAll({
       limit,
       offset,
+      postId: post_id,
     });
 
     const pagination = getPaginationMetadata(count, page, limit);
